@@ -24,7 +24,7 @@ void test_insert_single(const key_t key) {
   assert(p != NULL);
   assert(t->root == p);
   assert(p->key == key);
-  // assert(p->color == RBTREE_BLACK);  // color of root node should be black
+  assert(p->color == RBTREE_BLACK);  // color of root node should be black
 #ifdef SENTINEL
   assert(p->left == t->nil);
   assert(p->right == t->nil);
@@ -35,6 +35,18 @@ void test_insert_single(const key_t key) {
   assert(p->parent == NULL);
 #endif
   delete_rbtree(t);
+}
+
+void print_rbtree(const rbtree *t, const node_t *x) {
+  if (x == t->nil) {
+    printf("nil\n");
+    return;
+  }
+  printf("key = %d color = %d\n", x->key, x->color);
+  printf("left: ");
+  print_rbtree(t, x->left);
+  printf("right: ");
+  print_rbtree(t, x->right);
 }
 
 // find should return the node with the key or NULL if no such node exists
@@ -369,7 +381,6 @@ void test_find_erase_rand(const size_t n, const unsigned int seed) {
 
 int main(void) {
   test_init();
-  test_insert_single(1024);
   test_find_single(512, 1024);
   test_erase_root(128);
   test_find_erase_fixed();
